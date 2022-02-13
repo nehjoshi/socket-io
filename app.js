@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'https://nj-socket-io-chat.netlify.app',
+        origin: 'http://localhost:3000',
         methods: ["GET", "POST"]
     }
 });

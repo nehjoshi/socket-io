@@ -162,11 +162,12 @@ body {
   display: flex;
 }
 
-.chat-window .chat-footer input {
+.input {
   height: 100%;
   flex: 85%;
   border: 0;
   padding: 0 0.7em;
+  border: 1px solid black !important;
   font-size: 1em;
   border-right: 1px dotted #607d8b;
 
@@ -192,4 +193,8 @@ body {
 }
 .hide {
   opacity: 0 !important;
+}
+#typing {
+  margin-left: 10px;
+  color: #979797;
 }

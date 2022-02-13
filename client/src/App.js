@@ -3,7 +3,8 @@ import "./App.css";
 import io from 'socket.io-client';
 import Chat from './Chat';
 
-const socket = io.connect("https://nj-socket-chat.herokuapp.com/");
+const url = "https://nj-socket-chat.herokuapp.com/";
+const socket = io.connect(url);
 
 export default function App() {
 
