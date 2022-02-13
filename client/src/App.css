@@ -164,6 +164,7 @@ body {
 .chat-footer {
   border: none !important;
   border-color: transparent !important!;
+  margin-top: 10px;
 }
 .input {
   height: 100%;
