@@ -161,7 +161,10 @@ body {
   border-top: none;
   display: flex;
 }
-
+.chat-footer {
+  border: none !important;
+  border-color: transparent !important!;
+}
 .input {
   height: 100%;
   flex: 85%;
