@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react'
 import ScrollToBottom from 'react-scroll-to-bottom';
-import InputEmoji from "react-input-emoji";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Picker from 'emoji-picker-react';
+import {faFaceSmile, faPaperPlane} from '@fortawesome/free-solid-svg-icons';
 
 function Chat({ socket, name, id }) {
     const [message, setMessage] = React.useState("");
     const [messages, setMessages] = React.useState([]);
     const [typing, setTyping] = React.useState("");
+    const [showPicker, setShowPicker] = React.useState(false);
 
     const SendMessage = async () => {
         const date = new Date(Date.now());
         const hours = date.getHours();
+        setShowPicker(false);
         let minutes = date.getMinutes();
         if (minutes < 10) {
             minutes = "0" + minutes;
@@ -28,14 +32,17 @@ function Chat({ socket, name, id }) {
         }
     }
 
-    const handleChangeMessage = (message) => {
-        setMessage(message);
-        if (message===""){
+    const handleChangeMessage = (e) => {
+        setMessage(e.target.value);
+        if (e.target.value === "") {
             socket.emit("not_typing", { name, id });
         }
         else {
-            socket.emit("typing", { name, id });    
+            socket.emit("typing", { name, id });
         }
+    }
+    const onEmojiClick = (e, emojiObj) => {
+        setMessage(message => message + emojiObj.emoji);
     }
     useEffect(() => {
         socket.on("receive_message", (data) => {
@@ -56,7 +63,7 @@ function Chat({ socket, name, id }) {
     return (
         <div className="chat-window">
             <div className="chat-header">
-                <p>Live chat</p>
+                <p>Logged in as: {name}</p>
             </div>
             <div className="chat-body">
                 <ScrollToBottom className="message-container">
@@ -79,22 +86,18 @@ function Chat({ socket, name, id }) {
                 </ScrollToBottom>
             </div>
             <div className="chat-footer">
-                {/* <input 
-            type="text" 
-            value={message}
-            placeholder="Type your message here..." 
-            onChange={handleChangeMessage}
-            onKeyPress={e => {e.key === "Enter" && SendMessage()}}
-            /> */}
-                <InputEmoji
+            <FontAwesomeIcon icon={faFaceSmile} className="expand-emoji-icon" onClick={() => setShowPicker(!showPicker)}/>
+                <input
+                    type="text"
                     value={message}
-                    onChange={text => handleChangeMessage(text)}
                     className="input"
-                    onEnter = {message => SendMessage(message)}
-                    placeholder="Type a message"
+                    placeholder="Type your message here..."
+                    onChange={handleChangeMessage}
+                    onKeyPress={e => { e.key === "Enter" && SendMessage() }}
                 />
-                <button onClick={SendMessage}>&#9658;</button>
+                <FontAwesomeIcon icon={faPaperPlane} onClick={SendMessage} className="send-icon"/>
             </div>
+            {showPicker && <Picker onEmojiClick={onEmojiClick} />}
 
         </div>
     )
